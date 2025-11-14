@@ -1,19 +1,18 @@
-# =====================================================
-# STREAMLIT DASHBOARD — OFFLINE (LOCAL CSV MODE)
-# =====================================================
+
+# STREAMLIT DASHBOARD 
 
 import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-# =====================================================
+
 # CONFIGURATION
-# =====================================================
+
 st.set_page_config(page_title="Financial Reporting Dashboard", page_icon="💹", layout="wide")
 
-# =====================================================
+
 # LOAD DATA LOCALLY
-# =====================================================
+
 @st.cache_data
 def load_data():
     # Load your local CSV file
@@ -47,15 +46,15 @@ def load_data():
 
 df = load_data()
 
-# =====================================================
+
 # DASHBOARD HEADER
-# =====================================================
+
 st.title("💼 Financial Reporting Automation Dashboard")
 #st.markdown("#### Data Source: Local CSV File — No BigQuery Connection Needed")
 
-# =====================================================
+
 # KPI SECTION
-# =====================================================
+
 st.subheader("📊 Key Financial Indicators")
 
 total_companies = df["Company"].nunique()
@@ -71,9 +70,9 @@ col4.metric("🧾 Avg. Net Income (USD)", f"{avg_net_income:,.2f}")
 
 st.markdown("---")
 
-# =====================================================
+
 # FILTER SECTION
-# =====================================================
+
 companies = sorted(df["Company"].unique())
 categories = sorted(df["Category"].unique())
 
@@ -85,9 +84,9 @@ df_filtered = df[
     (df["Category"] == selected_category)
 ]
 
-# =====================================================
+
 # REVENUE & PROFITABILITY METRICS
-# =====================================================
+
 st.subheader("💵 Revenue & Profitability Metrics")
 
 fig1 = px.line(df_filtered, x="Year", y=["Revenue", "Net_Income"],
@@ -108,9 +107,9 @@ else:
 
 st.markdown("---")
 
-# =====================================================
+
 # REVENUE BY CATEGORY
-# =====================================================
+
 st.subheader("🏷️ Revenue by Category (Aggregated)")
 
 df_cat = df.groupby("Category", as_index=False)["Revenue"].sum()
@@ -119,9 +118,9 @@ st.plotly_chart(fig_cat, use_container_width=True)
 
 st.markdown("---")
 
-# =====================================================
+
 # RETURN & RATIO ANALYSIS
-# =====================================================
+
 st.subheader("💹 Return and Ratio Metrics")
 
 fig2 = px.bar(
@@ -133,9 +132,9 @@ fig2 = px.bar(
 )
 st.plotly_chart(fig2, use_container_width=True)
 
-# =====================================================
+
 # EFFICIENCY METRICS
-# =====================================================
+
 st.subheader("⚙️ Efficiency & Productivity Metrics")
 
 fig3 = px.bar(
@@ -149,9 +148,9 @@ st.plotly_chart(fig3, use_container_width=True)
 
 st.markdown("---")
 
-# =====================================================
+
 # SIMPLE REVENUE FORECAST (TREND-BASED)
-# =====================================================
+
 st.subheader("🔮 Predictive & Trend Analysis — Simple Forecast")
 
 # Simple moving average for demonstration
@@ -166,9 +165,9 @@ st.plotly_chart(fig4, use_container_width=True)
 
 st.markdown("---")
 
-# =====================================================
+
 # INFLATION IMPACT
-# =====================================================
+
 st.subheader("🌍 Inflation Impact Analysis")
 
 corr_rev = round(df["Inflation_Rate_US"].corr(df["Revenue"]), 2)
